@@ -9,6 +9,13 @@ from configs import data
 app = FastAPI()
 
 
+@app.post("/signup")
+async def sign_up_user(login_data: Annotated[LoginData, Body()]):
+    db = PostgresDB(**data)
+    await db.add_user(login_data)
+    return {"message": "user created"}
+
+
 @app.post("/login")
 async def log_in_user(login_data: Annotated[LoginData, Depends(verify_user)], response: Response):
     token = AuthService.create_token(

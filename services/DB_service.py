@@ -1,6 +1,7 @@
 import asyncpg
 from contextlib import asynccontextmanager
-from models import Note
+from models import Note, LoginData
+
 
 class PostgresDB:
     def __init__(self, user: str, password: str, database, host: str = 'localhost'):
@@ -20,6 +21,14 @@ class PostgresDB:
         yield conn
         await conn.close()
 
+    async def add_user(self, signup_data: LoginData):
+        async with self.connection() as conn:
+            result = await conn.execute(
+                "INSERT INTO users (user_name, user_pwd) VALUES ($1, $2)",
+                signup_data.username, signup_data.password
+            )
+            return result
+
     async def get_user(self, username: str):
         async with self.connection() as conn:
             result = await conn.fetchrow("SELECT * FROM users WHERE user_name = $1", username)
@@ -36,14 +45,4 @@ class PostgresDB:
     async def get_notes(self, user_name: str):
         async with self.connection() as conn:
             result = await conn.fetch("SELECT * FROM notes WHERE by_user = $1", user_name)
-            return result
-
-    async def execute_query(self, query, params=None):
-        async with self.connection() as conn:
-            result = await conn.execute(query, params=params)
-            return result
-
-    async def fetch_all(self, query, params=None):
-        async with self.connection() as conn:
-            result = await conn.fetch(query, params=params)
             return result
