@@ -3,7 +3,7 @@ from fastapi import FastAPI, Body, Depends, Response
 from typing import Annotated
 from services import AuthService, PostgresDB
 from models import Note, LoginData
-from dependencies import verify_user, verify_token
+from dependencies import verify_user, verify_token, spell_note
 from configs import data
 
 app = FastAPI()
@@ -28,10 +28,10 @@ async def log_in_user(login_data: Annotated[LoginData, Depends(verify_user)], re
 
 
 @app.post("/add_note")
-async def add_note(note_data: Annotated[Note, Body()], by_user: Annotated[str, Depends(verify_token)]):
+async def add_note(note_data: Annotated[Note, Depends(spell_note)], by_user: Annotated[str, Depends(verify_token)]):
     db = PostgresDB(**data)
     await db.add_note(note=note_data, username=by_user)
-    return {"message": "note added"}
+    return {"message": "note added", "note": note_data}
 
 
 @app.get("/notes")
