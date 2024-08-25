@@ -8,9 +8,9 @@ API based on FastAPI. Functionality:
  - Add new note
  - Show notes list
 
-API interacts with DB on Postres.
+API interacts with DB on Postgres.
 API has an authorization and authentication system based on JWT.
-Each note spelling before add to DB. Thus, notes haven't mistakes in it's title and content parts.
+Each note spelling before add to DB. Thus, notes haven't mistakes in its title and content parts.
 
 ### How to build and run?
 
@@ -19,12 +19,20 @@ Each note spelling before add to DB. Thus, notes haven't mistakes in it's title 
 docker-compose build
 ```
 
-#### Run:
+#### Run (background):
 ```commandline
-docker-compose up
+docker-compose up -d
 ```
 
 #### Stop:
 ```commandline
 docker-compose down
 ```
+
+***Important**
+
+After building an app, you have to restore db in Postgres, using **notes_db_template.backup** dump file.
+
+## Tests
+
+You can test API in Postman using Postman collections. JSON-collection in project directory.

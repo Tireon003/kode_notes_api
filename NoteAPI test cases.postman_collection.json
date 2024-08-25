@@ -1,0 +1,270 @@
+{
+	"info": {
+		"_postman_id": "46c77be8-b2af-4bee-8699-8cffd45b0045",
+		"name": "NoteAPI test cases",
+		"description": "Some test cases for notes api application. Here are various scenarios for using the api.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37825462"
+	},
+	"item": [
+		{
+			"name": "Login scenarios",
+			"item": [
+				{
+					"name": "Login user which doesn't exist",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"petya1234\",\r\n    \"password\": \"potapich90\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"login"
+							]
+						},
+						"description": "Try to do POST request with not existing username and any valid password (not important)."
+					},
+					"response": []
+				},
+				{
+					"name": "Login existing user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"username1\",\r\n    \"password\": \"pass0000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"login"
+							]
+						},
+						"description": "Do POST request to log in with valid username and password."
+					},
+					"response": []
+				},
+				{
+					"name": "Login with wrong password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"username1\",\r\n    \"password\": \"somewrongpword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"login"
+							]
+						},
+						"description": "Do POST request to try log in using existing username and wrong password."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sign up scenarios",
+			"item": [
+				{
+					"name": "Register user with valid credentials",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"username1\",\r\n    \"password\": \"pass0000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"signup"
+							]
+						},
+						"description": "Do POST request with valid credentials (min lenght = 8, max = 30)"
+					},
+					"response": []
+				},
+				{
+					"name": "Register with invalid password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"username1\",\r\n    \"password\": \"invalid\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"signup"
+							]
+						},
+						"description": "Do POST request with invalid credentials (lenght < 8 or > 30)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Interacting with notes",
+			"item": [
+				{
+					"name": "Getting notes list",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3IiOiJ1c2VybmFtZTEiLCJleHAiOjE3MjUyMDAxNTR9.MVy1XSK80ZOClV_RGMUrUErcuiVrvzHPw0qB1Jn-r9Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/notes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"notes"
+							]
+						},
+						"description": "Enter valid bearer token and try to get notes list."
+					},
+					"response": []
+				},
+				{
+					"name": "Add new note with mistakes",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3IiOiJ1c2VybmFtZTEiLCJleHAiOjE3MjUyMDAxNTR9.MVy1XSK80ZOClV_RGMUrUErcuiVrvzHPw0qB1Jn-r9Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Первоя запетка\",\r\n    \"content\": \"A botle off watar\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8001/add_note",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"add_note"
+							]
+						},
+						"description": "Enter valid bearer token and try to add new note with mistakes in title and content (if content exists)."
+					},
+					"response": []
+				},
+				{
+					"name": "Show notes list with wrong access token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3IiOiJ1c2VybmFtZTEiLCJleHAiOjE3MjUyMDAxNTR9.MVy1XSK80ZOClV_RGMUrUErcuiVrvzHPw0qB1Jn-r9Q123",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8001/notes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8001",
+							"path": [
+								"notes"
+							]
+						},
+						"description": "Now try to break access token and get notes list."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
