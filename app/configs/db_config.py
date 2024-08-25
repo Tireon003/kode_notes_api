@@ -1,11 +1,11 @@
-import os
 from dotenv import load_dotenv
+from os import environ
 
 load_dotenv()
 
 data = {
-    "user": os.getenv("POSTGRES_DB_USER"),
-    "password": os.getenv("POSTGRES_DB_PASSWORD"),
-    "database": "kode_proj_db",
-    "host": "localhost",
+    "user": environ["POSTGRES_DB_USER"],
+    "password": environ["POSTGRES_DB_PASSWORD"],
+    "database": "database",
+    "host": "db",
 }
