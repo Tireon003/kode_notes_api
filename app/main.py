@@ -41,5 +41,5 @@ async def get_user_notes(by_user: Annotated[str, Depends(verify_token)]):
     return notes
 
 
-if __name__ == '__main__':
-    uvicorn.run("main:app", reload=True)
+# if __name__ == '__main__':
+#     uvicorn.run(app)

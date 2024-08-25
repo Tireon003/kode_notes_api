@@ -1,6 +1,6 @@
 import asyncpg
 from contextlib import asynccontextmanager
-from models import Note, LoginData
+from app.models import Note, LoginData
 
 
 class PostgresDB:
