@@ -24,7 +24,7 @@ async def log_in_user(login_data: Annotated[LoginData, Depends(verify_user)], re
         }
     )
     response.set_cookie(key="access_token", value=token, secure=True, httponly=True)
-    return {"access_token": token}
+    return {"access_token": token, "token_type": "bearer"}
 
 
 @app.post("/add_note")
@@ -42,4 +42,4 @@ async def get_user_notes(by_user: Annotated[str, Depends(verify_token)]):
 
 
 # if __name__ == '__main__':
-#     uvicorn.run(app)
+#     uvicorn.run("main:app", host="localhost", port=8000)

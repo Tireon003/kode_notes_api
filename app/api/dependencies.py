@@ -4,7 +4,7 @@ from fastapi.security import OAuth2PasswordBearer
 from configs import data
 from models import LoginData, Note
 from services import PostgresDB, AuthService
-from api import Speller
+from services import Speller
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
@@ -35,8 +35,8 @@ async def verify_user(login_data: Annotated[LoginData, Body()]):
         )
 
 
-async def verify_token(token: Annotated[str, Depends(oauth2_scheme)]):
-    payload = AuthService.read_token(token)
+async def verify_token(access_token: Annotated[str, Depends(oauth2_scheme)]):
+    payload = AuthService.read_token(access_token)
     return payload["usr"]
 
 

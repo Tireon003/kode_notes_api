@@ -1,12 +1,18 @@
 import jwt
 import datetime as dt
 from fastapi import HTTPException
+from dotenv import load_dotenv
+import os
+import bcrypt
+
+
+load_dotenv()
 
 
 class AuthService:
 
     ALG = 'HS256'
-    SECRET = "BI1i21b3b09kn9dcb78e2nTe23Frf411Vv7dmg12lht5e"
+    SECRET = os.getenv("SECRET")
 
     @classmethod
     def create_token(cls, data: dict) -> str:
@@ -34,3 +40,13 @@ class AuthService:
                 detail="Invalid token",
                 headers={"WWW-Authenticate": "Bearer"}
             )
+
+    @staticmethod
+    def hash_pwd(password: str) -> str:
+        salt = bcrypt.gensalt()
+        hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+        return hashed_password.decode('ascii')
+
+    @staticmethod
+    def check_pwd(stored_password: str, provided_password: str) -> bool:
+        return bcrypt.checkpw(provided_password.encode('utf-8'), stored_password.encode('ascii'))
