@@ -1,10 +1,13 @@
 from pydantic import BaseModel, Field
-from typing import Optional
 from datetime import datetime
 
 
 class Note(BaseModel):
     title: str = Field(min_length=1, max_length=50)
-    content: Optional[str] = Field(min_length=1, max_length=500, default=None)
-    created_at: datetime = Field(default_factory=datetime.now)
+    content: str | None = Field(min_length=1, max_length=500, default=None)
 
+
+class NoteFromDB(Note):
+    note_id: int
+    by_user: int
+    created_at: datetime

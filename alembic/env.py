@@ -30,8 +30,8 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-config.set_main_option("sqlalchemy.url", setting.db_async_url)
-
+section = config.config_ini_section
+config.set_section_option(section, "DB_URL", setting.db_async_url)
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.

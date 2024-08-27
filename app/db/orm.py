@@ -1,3 +1,4 @@
+from app.api.models import Note, RegisterData
 from app.db.database import async_session
 from sqlalchemy import select
 from sqlalchemy.orm import joinedload
@@ -33,36 +34,23 @@ async def select_user(username: str) -> dict | None:
             }
 
 
-async def insert_note(userid: int, note: dict):
+async def insert_note(userid: int, note: Note):
     async with async_session() as session:
         new_note = NoteTable(
-            note_title=note["title"],
-            note_content=note["content"],
+            note_title=note.title,
+            note_content=note.content,
             by_user=userid
         )
         session.add(new_note)
         await session.commit()
 
 
-async def insert_new_user(credentials: dict):
+async def insert_new_user(credentials: RegisterData):
     async with async_session() as session:
         new_user = UserTable(
-            user_name=credentials["username"],
-            user_hashed_password=AuthService.hash_pwd(credentials["password"])
+            user_name=credentials.username,
+            user_hashed_password=AuthService.hash_pwd(credentials.password)
         )
         session.add(new_user)
-        await session.flush()
-        user_id = new_user.user_id
         await session.commit()
-        return user_id
 
-
-async def main():
-    # await insert_new_user({"username": "gunash", "password": "gunash"})
-    user_gunash = await select_user("gunash")
-    await insert_note(user_gunash["user_id"], {"title": "title", "content": "content"})
-    notes = await select_notes_by_user(user_gunash["user_id"])
-    print(notes)
-
-
-asyncio.run(main())

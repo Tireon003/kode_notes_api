@@ -1,43 +1,35 @@
 from typing import Annotated
 from fastapi import HTTPException, Body, status, Depends
 from fastapi.security import OAuth2PasswordBearer
-from configs import data
-from models import LoginData, Note
-from services import PostgresDB, AuthService
-from services import Speller
+from app.api.models import LoginData, Note, UserDataDB
+from app.api.services import AuthService, Speller
+from app.db.orm import select_user
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
 async def verify_user(login_data: Annotated[LoginData, Body()]):
-    db = PostgresDB(**data)
-    user_data_record = await db.get_user(login_data.username)
-    try:
-        user_data = LoginData(
-            **{
-                "username": user_data_record["user_name"],
-                "password": user_data_record["user_pwd"],
-            }
-        )
-        if user_data.password == login_data.password:
-            return user_data
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Incorrect password",
-                headers={"WWW-Authenticate": "Bearer"}
-            )
-    except TypeError:
+    valid_user_data = await select_user(login_data.username)
+    if not valid_user_data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No such user exists",
             headers={"WWW-Authenticate": "Bearer"}
         )
+    elif not AuthService.check_pwd(valid_user_data["hashed_password"], login_data.password):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect password",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+    else:
+        user_data = UserDataDB(**valid_user_data)
+        return user_data
 
 
 async def verify_token(access_token: Annotated[str, Depends(oauth2_scheme)]):
     payload = AuthService.read_token(access_token)
-    return payload["usr"]
+    return payload["id"]
 
 
 async def spell_note(note_data: Annotated[dict, Body()]) -> Note:

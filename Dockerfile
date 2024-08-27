@@ -10,6 +10,9 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY app app
 
-ENV PYTHONPATH=/src/app
+COPY alembic alembic
+COPY alembic.ini alembic.ini
 
-CMD uvicorn main:app --host 0.0.0.0 --port 8000
+#ENV PYTHONPATH=/src/app
+
+CMD uvicorn app.api.main:app --host 0.0.0.0 --port 8000
