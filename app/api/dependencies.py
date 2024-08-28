@@ -10,7 +10,6 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 async def verify_user(login_data: Annotated[LoginData, Body()]):
     valid_user_data = await select_user(login_data.username)
-    print(valid_user_data.keys())
     if not valid_user_data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
