@@ -33,6 +33,7 @@ target_metadata = Base.metadata
 section = config.config_ini_section
 config.set_section_option(section, "DB_URL", setting.db_async_url)
 
+
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
 
