@@ -35,7 +35,7 @@ docker-compose up -d
 
 #### Stop:
 ```commandline
-docker-compose down
+docker-compose stop
 ```
 
 
