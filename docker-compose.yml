@@ -17,7 +17,6 @@ services:
     ports:
       - ${APP_HOST_PORT}:8000
     restart: always
-#    command: alembic upgrade head
     env_file:
       - .env
 
@@ -31,7 +30,7 @@ services:
     networks:
       - default
     ports:
-      - ${DB_PORT}:5432
+      - 5431:5432
     volumes:
       - .postgres:/var/lib/postgres/data
     restart: always

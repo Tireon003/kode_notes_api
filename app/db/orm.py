@@ -24,13 +24,14 @@ async def select_user(username: str) -> dict | None:
     async with async_session() as session:
         query = select(UserTable).filter_by(user_name=username)
         user = await session.scalar(query)
+        print(user)
         if not user:
             return
         else:
             return {
                 "user_id": user.user_id,
                 "user_name": user.user_name,
-                "hashed_password": user.user_hashed_password,
+                "user_hashed_password": user.user_hashed_password,
             }
 
 

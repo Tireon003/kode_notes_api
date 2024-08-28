@@ -10,13 +10,14 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 async def verify_user(login_data: Annotated[LoginData, Body()]):
     valid_user_data = await select_user(login_data.username)
+    print(valid_user_data.keys())
     if not valid_user_data:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="No such user exists",
             headers={"WWW-Authenticate": "Bearer"}
         )
-    elif not AuthService.check_pwd(valid_user_data["hashed_password"], login_data.password):
+    elif not AuthService.check_pwd(valid_user_data["user_hashed_password"], login_data.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect password",

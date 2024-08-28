@@ -15,4 +15,4 @@ COPY alembic.ini alembic.ini
 
 #ENV PYTHONPATH=/src/app
 
-CMD uvicorn app.api.main:app --host 0.0.0.0 --port 8000
+CMD alembic upgrade head && uvicorn app.api.main:app --host 0.0.0.0 --port 8000

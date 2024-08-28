@@ -6,8 +6,10 @@ class LoginData(BaseModel):
     password: str
 
 
-class UserDataDB(LoginData):
-    id: int
+class UserDataDB(BaseModel):
+    user_id: int
+    user_name: str = Field(min_length=8, max_length=30)
+    user_hashed_password: str
 
 
 class RegisterData(LoginData):
