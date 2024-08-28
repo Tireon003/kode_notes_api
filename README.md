@@ -1,16 +1,25 @@
 ## Test task by Kode
 
 ### Description
-It is a simple app with API and Postres implementation.
+It is a simple app with API and Postgres implementation.
 API based on FastAPI. Functionality:
  - Sign up
  - Log in
  - Add new note
  - Show notes list
 
-API interacts with DB on Postgres.
+API interacts with DB on Postgres by SQLAlchemy ORM.
+Implemented Alembic migrations.
 API has an authorization and authentication system based on JWT.
+Passwords are secured by encryption and hashed storing in DB.
 Each note spelling before add to DB. Thus, notes haven't mistakes in its title and content parts.
+
+### Stack
+ - FastAPI
+ - SQLAlchemy ORM
+ - Alembic
+ - Docker & docker-compose
+
 
 ### How to build and run?
 
@@ -29,9 +38,6 @@ docker-compose up -d
 docker-compose down
 ```
 
-***Important**
-
-After building an app, you have to restore db in Postgres, using **notes_db_template.backup** dump file.
 
 ## Tests
 
