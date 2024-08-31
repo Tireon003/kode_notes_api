@@ -1,6 +1,6 @@
 from typing import Annotated
 from fastapi import HTTPException, Body, status, Depends
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from app.api.models import LoginData, Note, UserDataDB
 from app.api.services import AuthService, Speller
 from app.db.orm import select_user
@@ -8,7 +8,7 @@ from app.db.orm import select_user
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 
-async def verify_user(login_data: Annotated[LoginData, Body()]):
+async def verify_user(login_data: Annotated[LoginData, Depends(OAuth2PasswordRequestForm)]):
     valid_user_data = await select_user(login_data.username)
     if not valid_user_data:
         raise HTTPException(
@@ -32,8 +32,8 @@ async def verify_token(access_token: Annotated[str, Depends(oauth2_scheme)]):
     return payload["id"]
 
 
-async def spell_note(note_data: Annotated[dict, Body()]) -> Note:
-    note_data["title"] = Speller.correct_text(note_data["title"])
-    if note_data.get("content"):
-        note_data["content"] = Speller.correct_text(note_data["content"])
-    return Note(**note_data)
+async def spell_note(note_data: Annotated[Note, Body()]) -> Note:
+    note_data.title = Speller.correct_text(note_data.title)
+    if note_data.content:
+        note_data.content = Speller.correct_text(note_data.content)
+    return note_data
